@@ -35,9 +35,7 @@ public class RandomProgram
         }
         catch (Exception e)
         {
-            throw new Exception(
-                "got bad generator for index " + index + " with count " + generators.Count + " and " +
-                _randomGenerators.Count(), e);
+            throw new Exception($"Got bad generator for index {index} with generators count {generators.Count}", e);
         }
     }
 

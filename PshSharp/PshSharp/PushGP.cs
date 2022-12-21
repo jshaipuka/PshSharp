@@ -147,8 +147,7 @@ public abstract class PushGP : GA
         var iObject = Activator.CreateInstance(iclass);
         if (!(iObject is Interpreter)) throw new Exception("interpreter-class must inherit from class Interpreter");
         _interpreter = (Interpreter)iObject;
-        // XXX This isn't a program.
-        // _interpreter.randCode.SetInstructions(_interpreter, new Program(GetParam("instruction-set")));
+        _interpreter.randProgram.SetInstructions(_interpreter, new Program(GetParam("instruction-set")));
         _interpreter.randInt.min = minRandomInt;
         _interpreter.randInt.max = maxRandomInt;
         _interpreter.randInt.resolution = randomIntResolution;

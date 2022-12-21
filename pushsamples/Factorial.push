@@ -1,0 +1,3 @@
+(input.in0 input.in0 integer.stackdepth integer.- integer.* input.in0 integer.shove input.in0 input.in0 integer.max integer.abs input.in0 integer.stackdepth integer.- input.in0 integer.shove integer.+ integer.* input.in0 integer.dup integer.shove integer.shove integer.* integer.stackdepth integer.shove integer.> input.in0 input.in0 integer.+ integer.+ integer.max)
+10000
+6

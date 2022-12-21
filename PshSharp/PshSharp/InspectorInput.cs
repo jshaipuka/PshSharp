@@ -14,6 +14,7 @@
 * limitations under the License.
 */
 
+using System.Text.RegularExpressions;
 using SharpenMinimal;
 
 namespace Psh;
@@ -125,12 +126,11 @@ public class InspectorInput
     }
 
     /// <exception cref="System.Exception" />
-    private void ParseAndLoadInputs(string inputs)
+    private void ParseAndLoadInputs(string input)
     {
-        var inputTokens = inputs.Split("\\s+");
-        for (var i = 0; i < inputTokens.Length; i++)
+        var inputTokens = Regex.Split(input, "\\s+");
+        foreach (var token in inputTokens)
         {
-            var token = inputTokens[i];
             if (token.Equals(string.Empty)) continue;
 
             if (token.Equals("true"))
@@ -138,34 +138,27 @@ public class InspectorInput
                 _interpreter.BoolStack().Push(true);
                 _interpreter.InputStack().Push(true);
             }
-            else
+            else if (token.Equals("false"))
             {
-                if (token.Equals("false"))
+                _interpreter.BoolStack().Push(false);
+                _interpreter.InputStack().Push(false);
+            }
+            else if (token.Matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+"))
+            {
+                if (token.Contains('.'))
                 {
-                    _interpreter.BoolStack().Push(false);
-                    _interpreter.InputStack().Push(false);
+                    _interpreter.FloatStack().Push(float.Parse(token));
+                    _interpreter.InputStack().Push(float.Parse(token));
                 }
                 else
                 {
-                    if (token.Matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+"))
-                    {
-                        if (token.IndexOf('.') != -1)
-                        {
-                            _interpreter.FloatStack().Push(float.Parse(token));
-                            _interpreter.InputStack().Push(float.Parse(token));
-                        }
-                        else
-                        {
-                            _interpreter.IntStack().Push(Convert.ToInt32(token));
-                            _interpreter.InputStack().Push(Convert.ToInt32(token));
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("Inputs must be of type int, float, or boolean. \"" + token +
-                                            "\" is none of these.");
-                    }
+                    _interpreter.IntStack().Push(Convert.ToInt32(token));
+                    _interpreter.InputStack().Push(Convert.ToInt32(token));
                 }
+            }
+            else
+            {
+                throw new Exception($"Inputs must be of type int, float, or boolean. \"{token}\" is none of these.");
             }
         }
     }
